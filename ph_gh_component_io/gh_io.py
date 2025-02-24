@@ -486,6 +486,11 @@ class IGH:
         # type: () -> str
         """Returns the 'square' of the Rhino Unit System Name as a string."""
         return "SQ-{}".format(self.sc.doc.ModelUnitSystem)
+    
+    def get_rhino_volume_unit_name(self):
+        # type: () -> str
+        """Returns the 'square' of the Rhino Unit System Name as a string."""
+        return "{}-3".format(self.sc.doc.ModelUnitSystem)
 
     def duplicate_data_to_branches(self, _data, _branch_count=1, _shallow=True):
         # type: (List[Any], int, bool) -> DataTree[Object]

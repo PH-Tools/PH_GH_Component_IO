@@ -1,6 +1,6 @@
 [project]
 name = "PH-GH-Component-IO"
-version = "0.0.1"
+version = "0.0.2"
 description = "Rhino/Grasshopper Component I/O Utility Library."
 readme = "README.md"
 requires-python = ">2.7"
