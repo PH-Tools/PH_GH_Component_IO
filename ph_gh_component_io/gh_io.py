@@ -120,6 +120,17 @@ class IGH:
         """Convenience Attribute Alias."""
         return self.scriptcontext
 
+    @property
+    def rg(self):
+        """Facade for Rhino.Geometry"""
+        return self.Rhino.Geometry
+
+    @property
+    def gh_type(self):
+        # type: () -> Any
+        """Facade for Grasshopper.Kernel.Types"""
+        return self.Grasshopper.Kernel.Types
+
     def DataTree(self, _type=Object):
         # type: (Any) -> Any
         """Facade for Grasshopper.DataTree[_type]"""
@@ -521,7 +532,46 @@ class IGH:
         # type: () -> float
         return self.scriptcontext.doc.ModelAbsoluteTolerance
 
+    @property
+    def active_doc(self):
+        # type: () -> Rhino.RhinoDoc.ActiveDoc
+        """Returns the RhinoDoc.ActiveDoc"""
+        return self.Rhino.RhinoDoc.ActiveDoc
 
+    def get_rhino_render_materials(self):
+        # type: () -> Rhino.RhinoDoc.ActiveDoc.RenderMaterials
+        """Returns the Rhino RenderMaterials collection"""
+        return self.active_doc.RenderMaterials
+
+    def get_rhino_render_material(self, _name):
+        # type: (str) -> Any | None
+        """Returns a Rhino RenderMaterial object by name, or None if not found."""
+        for material in self.get_rhino_render_materials():
+            if material.Name == _name:
+                return material
+        return None
+
+    def create_rhino_render_material(self, _name, _color, _transparency=0.0):
+        # type: (str, Any, float) -> Any
+        """Creates and returns a new Rhino RenderMaterial object."""
+        
+        # -- If the Material already exists, return it
+        render_material = self.get_rhino_render_material(_name)
+        if not render_material:
+            # -- Otherwise, create a new RenderMaterial
+            render_material = self.Rhino.Render.RenderMaterial.CreateBasicMaterial(None)
+            render_material.Name = _name
+            self.active_doc.RenderMaterials.Add(render_material)
+        
+        # -- Update the color
+        render_material.BeginChange(self.Rhino.Render.RenderContent.ChangeContexts.Program)
+        render_material.SetParameter("diffuse", _color if _color else System.Drawing.Color.Gray)
+        render_material.SetParameter("transparency", _transparency)
+        render_material.EndChange()
+        
+        return render_material
+    
+    
 class ComponentInput:
     """GH-Component Input Node data class."""
 
