@@ -4,12 +4,10 @@ name = "PH-GH-Component-IO"
 version = "0.0.2"
 description = "Rhino/Grasshopper Component I/O Utility Library."
 readme = "README.md"
-requires-python = ">=2.7"
+requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
 authors = [{ name = "PH-Tools", email = "phtools@bldgtyp.com" }]
 classifiers = [
-    "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Operating System :: OS Independent",
