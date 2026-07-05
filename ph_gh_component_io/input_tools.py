@@ -42,11 +42,8 @@ def input_to_int(_input_value, _default=None):
             raise ValueError
         return int(result.group(0))
     except ValueError:
-        msg = (
-            'Input Error: Cannot use input "{}" [{}].\n'
-            "Please check the allowable input options.".format(
-                _input_value, type(_input_value)
-            )
+        msg = 'Input Error: Cannot use input "{}" [{}].\n' "Please check the allowable input options.".format(
+            _input_value, type(_input_value)
         )
         raise Exception(msg)
     except AttributeError as e:

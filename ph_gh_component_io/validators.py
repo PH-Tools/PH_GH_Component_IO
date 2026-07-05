@@ -20,7 +20,7 @@ class MyClassWithValidation(object):
         # type: (int) -> None
         self.example = example # Instance Attribute with the same name
 
-        
+
 >>> obj = MyClassWithValidation()
 >>> obj.example = 0
 >>> ValueError: Input for 'example' may not be 0!

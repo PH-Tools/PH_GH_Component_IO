@@ -497,7 +497,7 @@ class IGH:
         # type: () -> str
         """Returns the 'square' of the Rhino Unit System Name as a string."""
         return "SQ-{}".format(self.sc.doc.ModelUnitSystem)
-    
+
     def get_rhino_volume_unit_name(self):
         # type: () -> str
         """Returns the 'square' of the Rhino Unit System Name as a string."""
@@ -554,7 +554,7 @@ class IGH:
     def create_rhino_render_material(self, _name, _color, _transparency=0.0):
         # type: (str, Any, float) -> Any
         """Creates and returns a new Rhino RenderMaterial object."""
-        
+
         # -- If the Material already exists, return it
         render_material = self.get_rhino_render_material(_name)
         if not render_material:
@@ -562,16 +562,16 @@ class IGH:
             render_material = self.Rhino.Render.RenderMaterial.CreateBasicMaterial(None)
             render_material.Name = _name
             self.active_doc.RenderMaterials.Add(render_material)
-        
+
         # -- Update the color
         render_material.BeginChange(self.Rhino.Render.RenderContent.ChangeContexts.Program)
         render_material.SetParameter("diffuse", _color if _color else System.Drawing.Color.Gray)
         render_material.SetParameter("transparency", _transparency)
         render_material.EndChange()
-        
+
         return render_material
-    
-    
+
+
 class ComponentInput:
     """GH-Component Input Node data class."""
 
@@ -592,6 +592,29 @@ class ComponentInput:
 
     def __str__(self):
         return "{}(name={})".format(self.__class__.__name__, self.name, self.access, self.type_hint)
+
+    def __repr__(self):
+        return str(self)
+
+    def ToString(self):
+        return str(self)
+
+
+class ComponentOutput:
+    """GH-Component Output Node data class.
+
+    The output-side twin of 'ComponentInput'. Note that GH output params are
+    generic (no 'TypeHint'), so this only carries name / description / access.
+    """
+
+    def __init__(self, _name="-", _description="", _access=0):
+        # type: (str, str, int) -> None
+        self.name = _name
+        self.description = _description
+        self.access = _access  # 0='item', 1='list', 2='tree'
+
+    def __str__(self):
+        return "{}(name={})".format(self.__class__.__name__, self.name)
 
     def __repr__(self):
         return str(self)
@@ -668,6 +691,45 @@ def setup_component_inputs(IGH, _input_dict, _start_i=1, _end_i=20):
             input_node.TypeHint = input_item.type_hint
         except ValueError:
             # -- past end of component inputs
+            pass
+
+    return None
+
+
+def setup_component_outputs(IGH, _output_dict, _start_i=1, _end_i=20):
+    # type: (IGH, Dict[int, ComponentOutput], int, int) -> None
+    """Dynamic GH component output node configuration.
+
+    The output-side twin of 'setup_component_inputs'. Rewrites the component's
+    output-node names/descriptions/access based on the supplied dict. Any output
+    node NOT present in the dict is reset to a blank '-' node so that stale names
+    from a previous configuration do not linger when the node-set shrinks.
+
+    Note: GH output params are generic and have no 'TypeHint' to set.
+
+    Arguments:
+    ----------
+        * IGH (): The Grasshopper Interface object.
+        * _output_dict (dict[int, ComponentOutput]): The output dict with the field
+            names and descriptions to use for the component output nodes.
+        * _start_i (int): Optional starting node number. Default=1
+        * _end_i (int): Optional ending node number. Default=20
+
+    Returns:
+    --------
+        * None
+    """
+    for output_num in range(_start_i, _end_i):
+        output_item = _output_dict.get(output_num, ComponentOutput("-", "-"))
+
+        try:
+            output_node = IGH.ghenv.Component.Params.Output[output_num]
+            output_node.NickName = output_item.name
+            output_node.Name = output_item.name
+            output_node.Description = output_item.description
+            output_node.Access = IGH.Grasshopper.Kernel.GH_ParamAccess(output_item.access)
+        except ValueError:
+            # -- past end of component outputs
             pass
 
     return None
