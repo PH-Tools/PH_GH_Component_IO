@@ -7,13 +7,16 @@ STATUS: CANONICAL ENGINEERING STANDARD
 
 ## 1. IronPython 2.7 compatibility (mandatory)
 
-This library loads in Rhino. It must run under IronPython 2.7.
+The generic dual-runtime rules (banned syntax and modules, comment-style type
+hints, guarded `typing` imports, defensive third-party imports, and the lint
+settings they imply) live in the **ironpython-27-compatibility** skill. Apply it
+before editing anything on the Rhino load path. Only this repo's specifics are
+recorded below.
 
-- No f-strings — use `.format()`. No `pathlib`/modern-stdlib-only features.
-- Comment-style type hints (`# type: (str) -> int`), not inline annotations.
-- Guard `typing` imports (`try: from typing import ... except ImportError: pass`).
-- Keep the `# -*- Python Version: 2.7 -*-` header on every module.
-- Import Rhino/GH/`ladybug_rhino` APIs defensively — they only exist at runtime.
+This library loads in Rhino. The whole package is on the load path.
+
+Keep the `# -*- Python Version: 2.7 -*-` header on every module. Rhino / GH /
+`ladybug_rhino` APIs exist only at runtime, so import them defensively.
 
 ## 2. Public API stability
 

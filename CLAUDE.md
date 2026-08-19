@@ -2,7 +2,7 @@
 
 The shared **input/output plumbing** for the PH-Tools Grasshopper component libraries — the `IGH` interface, input cleaning, object preview, input validators, and the CPython subprocess bridge. Consumed by Honeybee-PH, HBPH+, Honeybee-REVIVE-Grasshopper, etc. Source: https://github.com/PH-Tools/PH_GH_Component_IO (distributed via GitHub, not PyPI).
 
-> **Runtime constraint (critical):** runs inside Rhino's **IronPython 2.7** interpreter — every module carries a `# -*- Python Version: 2.7 -*-` header. All code must be Python-2.7 safe. See `context/CODING_STANDARDS.md`.
+> **Runtime constraint (critical):** runs inside Rhino's **IronPython 2.7** interpreter — every module carries a `# -*- Python Version: 2.7 -*-` header. All code must be Python-2.7 safe. Apply the **ironpython-27-compatibility** skill; repo specifics in `context/CODING_STANDARDS.md`.
 
 ## What this repo is
 
