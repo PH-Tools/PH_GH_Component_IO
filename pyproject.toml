@@ -22,6 +22,10 @@ dev = ["black", "isort", "Grasshopper-stubs", "Rhino-stubs"]
 homepage = "https://www.passivehousetools.com/"
 repository = "https://github.com/PH-Tools/PH_GH_Component_IO"
 
+# -- Ship only the package; context/ and planning/ would otherwise break flat-layout discovery
+[tool.setuptools]
+packages = ["ph_gh_component_io"]
+
 # -- Bump My Version ---------------------------------------------------------------
 # This repo is distributed via GitHub (not PyPI), so we only tag — no publish step.
 [tool.bumpversion]
