@@ -1,7 +1,7 @@
 # -- Project Metadata -------------------------------------------------------------
 [project]
 name = "PH-GH-Component-IO"
-version = "0.0.6"
+version = "0.0.7"
 description = "Rhino/Grasshopper Component I/O Utility Library."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -35,7 +35,7 @@ include = ["ph_gh_component_io*"]
 # -- Bump My Version ---------------------------------------------------------------
 # This repo is distributed via GitHub (not PyPI), so we only tag — no publish step.
 [tool.bumpversion]
-current_version = "0.0.6"
+current_version = "0.0.7"
 commit = true
 tag = true
 tag_name = "v{new_version}"
